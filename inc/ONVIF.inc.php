@@ -385,6 +385,103 @@ class ONVIF {
 		return $this->client->GetNetworkInterfaces();
 	}
 
+	public function get_network_protocols() {
+		return $this->client->GetNetworkProtocols();
+	}
+
+	/**
+	 * @param string $protocol HTTP|HTTPS|RTSP
+	 * @param bool $enable
+	 * @param int $port
+	 *
+	 * todo - implement edit of multple protocols 
+	 */
+	public function set_network_protocol( $protocol, $enable, $port ) {
+		$this->client->SetNetworkProtocols(array(
+			'NetworkProtocols' => array(
+				'Name' => $protocol,
+				'Enabled' => $enable,
+				'Port' => $port
+			),
+		));
+	}
+
+	public function get_network_default_gateway() {
+		return $this->client->GetNetworkDefaultGateway();
+	}
+
+	/**
+	 * @param string $address IPv4 Address X.X.X.X
+	 */
+	public function set_network_default_gateway_ipv4($address) {
+		$this->client->SetNetworkDefaultGateway( array(
+			'IPv4Address' => $address
+		));
+	}
+
+	public function set_network_default_gateway_ipv6($address) {
+		$this->client->SetNetworkDefaultGateway( array(
+			'IPv6Address' => $address
+		));
+	}
+
+	public function get_zero_configuration() {
+		return $this->client->GetZeroConfiguration();
+	}
+
+	/**
+	 * @param string $interface Unique identifier referencing the physical interface.
+	 * @param bool $enabled Specifies if the zero-configuration should be enabled or not.
+	 */
+	public function set_zero_configuration($interface,$enabled) {
+		$this->client->SetZeroConfiguration( array(
+			'InterfaceToken' => $interface,
+			'Enabled' => $enabled
+		));
+	}
+
+	/**
+	 * Gets the IP address filter settings from a device
+	 */
+	public function get_ip_address_filter() {
+		return $this->client->GetIPAddressFilter();
+	}
+
+	public function get_access_policy() {
+		return $this->client->GetAccessPolicy();
+	}
+
+	/**
+	 * This operation gets all device server certificates (including self-signed) for the purpose of TLS
+	 * authentication and all device client certificates for the purpose of IEEE 802.1X authentication.
+	 */
+	public function get_certificates() {
+		return $this->client->GetCertificates();
+	}
+
+	/**
+	 * Manage auxiliary commands supported by a device, such as controlling an Infrared (IR) lamp,
+	 * a heater or a wiper or a thermometer that is connected to the device.
+	 * @param string $command tt:Wiper|On t:Wiper|Off tt:IRLamp|On tt:IRLamp|Off tt:IRLamp|Auto
+	 */
+	public function send_auxiliary_command($command) {
+		$this->client->SendAuxiliaryCommand(array(
+			'AuxiliaryCommand' => $command
+		));
+	}
+
+	public function get_dot_11_configuration() {
+		return $this->client->GetDot1XConfiguration();
+	}
+
+	public function get_system_uris() {
+		return $this->client->GetSystemUris();
+	}
+
+	public function get_storage_configurations() {
+		return $this->client->GetStorageConfigurations();
+	}
+
 	private function soapClientWSSecurityHeader($user, $password) {
 		// Creating date using yyyy-mm-ddThh:mm:ssZ format
 		$tm_created = gmdate('Y-m-d\TH:i:s\Z', time()  );
