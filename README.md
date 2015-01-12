@@ -4,6 +4,7 @@ The class uses slightly modified devicemgmt.wsdl where endpoint is defined and t
 The endpoint is overwritten with the parameter but it is still needed
 
 example:
+```php
 include( 'inc/ONVIF.inc.php' );
 ini_set( 'default_socket_timeout', 1800 ); 
 $wsdl    = 'http://localhost/WSDL/devicemgmt-mod.wsdl';
@@ -23,3 +24,4 @@ try {
 	print "Last response:\n";
 	print( $res . "\n");
 }
+```
