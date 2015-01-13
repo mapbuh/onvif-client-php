@@ -1,6 +1,7 @@
 ONVIF client library classes
 
 ONVIFDevicemgmt
+
 The class uses slightly modified devicemgmt.wsdl where endpoint is defined and the reference to onvif.xsd is fixed.
 The endpoint is overwritten with the parameter but it is still needed
 
