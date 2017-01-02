@@ -33,7 +33,7 @@
 require('ONVIF.inc.php');
 class ONVIFDevicemgmt extends ONVIF {
 	public function set_hostname( $hostname ) {
-		$this->client->SetHostname(array(
+		return $this->client->SetHostname(array(
 				'Name' => $hostname
 		));
 	}
@@ -311,7 +311,7 @@ class ONVIFDevicemgmt extends ONVIF {
 	}
 
 	public function get_ntp() {
-		return $this->client->GetNTP(array());
+		return $this->client->GetNTP();
 	}
 
 	/**

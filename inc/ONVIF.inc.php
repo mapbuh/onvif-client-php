@@ -42,14 +42,28 @@ class ONVIF {
 		));
 		$this->client->__setLocation($service);
 
-	 	$this->client->__setSoapHeaders($this->soapClientWSSecurityHeader($username,$password));
+		$camera_datetime = $this->get_system_date_and_time();
+		$camera_ts = gmmktime( 
+			$camera_datetime->SystemDateAndTime->UTCDateTime->Time->Hour,
+			$camera_datetime->SystemDateAndTime->UTCDateTime->Time->Minute,
+			$camera_datetime->SystemDateAndTime->UTCDateTime->Time->Second,
+			$camera_datetime->SystemDateAndTime->UTCDateTime->Date->Month,
+			$camera_datetime->SystemDateAndTime->UTCDateTime->Date->Day,
+			$camera_datetime->SystemDateAndTime->UTCDateTime->Date->Year
+		);
+
+
+	 	$this->client->__setSoapHeaders($this->soapClientWSSecurityHeader($username,$password, $camera_ts));
 		return;
 	}
 
-	protected function soapClientWSSecurityHeader($user, $password) {
+	protected function soapClientWSSecurityHeader($user, $password, $ts) {
+		if ( $ts == 0 ) {
+			$ts = time();
+		}
 		// Creating date using yyyy-mm-ddThh:mm:ssZ format
-		$tm_created = gmdate('Y-m-d\TH:i:s\Z', time()  );
-		$tm_expires = gmdate('Y-m-d\TH:i:s\Z', date('U') + 180 ); //only necessary if using the timestamp element
+		$tm_created = gmdate('Y-m-d\TH:i:s\Z', $ts  );
+#		$tm_expires = gmdate('Y-m-d\TH:i:s\Z', $ts + 180 ); //only necessary if using the timestamp element
 
 		// Generating and encoding a random number
 		$simple_nonce = mt_rand();
@@ -73,7 +87,7 @@ class ONVIF {
 		$timestamp = $security->addChild('wsu:Timestamp', null, $ns_wsu);
 		$timestamp->addAttribute('wsu:Id', 'Timestamp-28');
 		$timestamp->addChild('wsu:Created', $tm_created, $ns_wsu);
-		$timestamp->addChild('wsu:Expires', $tm_expires, $ns_wsu);
+#		$timestamp->addChild('wsu:Expires', $tm_expires, $ns_wsu);
 
 		$usernameToken = $security->addChild('wsse:UsernameToken', null, $ns_wsse);
 		$usernameToken->addChild('wsse:Username', $user, $ns_wsse);
