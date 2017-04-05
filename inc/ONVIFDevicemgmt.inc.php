@@ -30,7 +30,7 @@
  * @author Nickola Trupcheff <n.trupcheff@gmail.com>
  * @version 0.1
  */
-require('ONVIF.inc.php');
+require_once('ONVIF.inc.php');
 class ONVIFDevicemgmt extends ONVIF {
 	public function set_hostname( $hostname ) {
 		return $this->client->SetHostname(array(

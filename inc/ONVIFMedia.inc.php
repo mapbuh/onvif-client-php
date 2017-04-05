@@ -31,7 +31,7 @@
  * @author Nickola Trupcheff <n.trupcheff@gmail.com>
  * @version 0.1
  */
-require( 'ONVIF.inc.php');
+require_once('ONVIF.inc.php');
 class ONVIFMedia extends ONVIF {
 	/**
 	 * Returns the capabilities of the media service.

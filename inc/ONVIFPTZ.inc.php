@@ -31,7 +31,7 @@
  * @author Nickola Trupcheff <n.trupcheff@gmail.com>
  * @version 0.1
  */
-require( 'ONVIF.inc.php');
+require_once( 'ONVIF.inc.php');
 class ONVIFPTZ extends ONVIF {
 	/**
 	 * Returns the capabilities of the PTZ service.

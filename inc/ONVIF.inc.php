@@ -42,22 +42,25 @@ class ONVIF {
 		));
 		$this->client->__setLocation($service);
 
-		$camera_datetime = $this->get_system_date_and_time();
-		$camera_ts = gmmktime( 
-			$camera_datetime->SystemDateAndTime->UTCDateTime->Time->Hour,
-			$camera_datetime->SystemDateAndTime->UTCDateTime->Time->Minute,
-			$camera_datetime->SystemDateAndTime->UTCDateTime->Time->Second,
-			$camera_datetime->SystemDateAndTime->UTCDateTime->Date->Month,
-			$camera_datetime->SystemDateAndTime->UTCDateTime->Date->Day,
-			$camera_datetime->SystemDateAndTime->UTCDateTime->Date->Year
-		);
-
-
-	 	$this->client->__setSoapHeaders($this->soapClientWSSecurityHeader($username,$password, $camera_ts));
+		# unfortunately this extra can be used only in devicemgmt
+		if ( get_called_class() == 'ONVIFDevicemgmt' ) {
+			$camera_datetime = $this->get_system_date_and_time();
+			$camera_ts = gmmktime( 
+				$camera_datetime->SystemDateAndTime->UTCDateTime->Time->Hour,
+				$camera_datetime->SystemDateAndTime->UTCDateTime->Time->Minute,
+				$camera_datetime->SystemDateAndTime->UTCDateTime->Time->Second,
+				$camera_datetime->SystemDateAndTime->UTCDateTime->Date->Month,
+				$camera_datetime->SystemDateAndTime->UTCDateTime->Date->Day,
+				$camera_datetime->SystemDateAndTime->UTCDateTime->Date->Year
+			);
+			$this->client->__setSoapHeaders($this->soapClientWSSecurityHeader($username,$password, $camera_ts));
+		} else {
+			$this->client->__setSoapHeaders($this->soapClientWSSecurityHeader($username,$password));
+		}
 		return;
 	}
 
-	protected function soapClientWSSecurityHeader($user, $password, $ts) {
+	protected function soapClientWSSecurityHeader($user, $password, $ts = 0) {
 		if ( $ts == 0 ) {
 			$ts = time();
 		}
